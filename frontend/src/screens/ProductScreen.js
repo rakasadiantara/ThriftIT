@@ -1,16 +1,34 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import data from '../data';
 import Rating from '../components/Rating';
-
+import { useDispatch, useSelector } from 'react-redux';
+import LoadingBox from '../components/LoadingBox';
+import MessageBox from '../components/MessageBox';
+import { detailsProduct } from '../actions/productActions';
 
 export default function ProductScreen(props) {
-    const product = data.products.find(x => x._id === props.match.params.id);
-    if(!product){
-        return <div> Product Ini Tidak Ada!</div>
-    }
+    // const product = data.products.find(x => x._id === props.match.params.id); // show product menggunakan static file
+    const dispatch = useDispatch();
+    const productId = props.match.params.id;
+    const productDetails = useSelector( state => state.productDetails);
+    const { loading, error, product } = productDetails; // ini dimanakan constructor object = productDetails.product
+    // if(!product){
+    //     return <div> Product Ini Tidak Ada!</div>
+    // }
+
+    useEffect(() => {
+        dispatch(detailsProduct(productId));
+    }, [dispatch, productId]);
+
+
     return (
         <div>
+        {loading ? (
+          <LoadingBox></LoadingBox>
+        ) : error ? (
+          <MessageBox variant="danger">{error}</MessageBox>
+        ) : (
+            <div>
             <Link to="/">Kembali</Link>
             <div className="row top">
                 <div className="col-2">
@@ -64,5 +82,9 @@ export default function ProductScreen(props) {
                 </div>
             </div>
         </div>
-    )
+         )}
+       </div>
+
+
+    );
 }

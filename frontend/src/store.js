@@ -1,7 +1,10 @@
 import { applyMiddleware, createStore, compose, combineReducers } from 'redux';
 import thunk from 'redux-thunk';
 // import data from './data';
-import { productListReducer } from './reducers/productReducers';
+import { 
+    productDetailsReducer, 
+    productListReducer 
+} from './reducers/productReducers';
 
 const initialState = {}; // membuat initial state
 // const reducer = (state, action) => { // membuat reducer
@@ -10,6 +13,7 @@ const initialState = {}; // membuat initial state
 
 const reducer = combineReducers({
     productList: productListReducer,
+    productDetails: productDetailsReducer,
 })
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
